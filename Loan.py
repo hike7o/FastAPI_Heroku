@@ -49,7 +49,7 @@ st.markdown('<style>body{background-color: #fbfff0}</style>',unsafe_allow_html=T
 st.markdown(html_header, unsafe_allow_html=True)
 
 # Display the logo in the sidebar
-path = "logo.png"
+path = "Logo.png"
 image = Image.open(path)
 st.sidebar.image(image, width=300)
 
