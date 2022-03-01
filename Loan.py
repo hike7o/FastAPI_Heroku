@@ -89,9 +89,6 @@ html_select_client="""
 st.markdown(html_select_client, unsafe_allow_html=True)
 
 def main():
-    # local API 
-    API_URL = "http://localhost:8000/"
-    
 
     ##################################
     # LIST OF API REQUEST FUNCTIONS
@@ -101,7 +98,8 @@ def main():
     def get_sk_ids():
         
         # Requesting the API and saving the response
-        response = requests.get("http://localhost:8000/sk_ids")
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/sk_ids")
+#        response = requests.get("http://localhost:8000/sk_ids")
         # Convert from JSON format to Python dict
         content = json.loads(response.content)
         # Getting the values of SK_IDS from the content
@@ -116,25 +114,14 @@ def main():
     customer_id = st.sidebar.selectbox('Customer ID:', SK_IDS, key=1)
     st.write('Customer id: ', customer_id)
     
-    
-    # Get list of SK_IDS (cached)
-    @st.cache
-    def get_sk_ids():
-        
-        # Requesting the API and saving the response
-        response = requests.get("http://localhost:8000/sk_ids")
-        # Convert from JSON format to Python dict
-        content = json.loads(response.content)
-        # Getting the values of SK_IDS from the content
-        SK_IDS = pd.Series(content['data']).values
-        return SK_IDS
-    
+      
     # Get basic info from customer (cached)
     @st.cache
     def cust_info(customer_id):
         
         # Requesting the API and saving the response
-        response = requests.get("http://localhost:8000/customer_info/?SK_ID_CURR=" + str(customer_id))
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/customer_info/?SK_ID_CURR=" + str(customer_id))
+#        response = requests.get("http://localhost:8000/customer_info/?SK_ID_CURR=" + str(customer_id))
         # Convert from JSON format to Python dict
         content = json.loads(response.content)
         df = pd.DataFrame.from_dict(content, orient="index")
@@ -148,7 +135,8 @@ def main():
     def cust_loan(customer_id):
         
         # Requesting the API and saving the response
-        response = requests.get("http://localhost:8000/customer_loan/?SK_ID_CURR=" + str(customer_id))
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/customer_loan/?SK_ID_CURR=" + str(customer_id))
+#        response = requests.get("http://localhost:8000/customer_loan/?SK_ID_CURR=" + str(customer_id))
         # Convert from JSON format to Python dict
         content = json.loads(response.content)
         df = round(pd.DataFrame.from_dict(content, orient="index"), 2)
@@ -165,7 +153,9 @@ def main():
     def all_info(customer_id):
         
         # Requesting the API and saving the response
-        response = requests.get("http://localhost:8000/origin_data/?SK_ID_CURR=" + str(customer_id))
+        
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/origin_data/?SK_ID_CURR=" + str(customer_id))    
+#        response = requests.get("http://localhost:8000/origin_data/?SK_ID_CURR=" + str(customer_id))
         # Convert from JSON format to Python dict
         content = json.loads(response.content)
         df = pd.DataFrame.from_dict(content, orient="index")
@@ -194,15 +184,15 @@ def main():
 
     st.markdown(html_score, unsafe_allow_html=True)
 
-    # Préparation des données à afficher dans la jauge ==============================================
-
+    
     
 #    Get Personal data (cached)
     @st.cache
     def get_customer_data(customer_id):
         
         # save the response to API request
-        response = requests.get("http://localhost:8000/customer_data/?SK_ID_CURR="+ str(customer_id))
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/customer_data/?SK_ID_CURR="+ str(customer_id))
+#        response = requests.get("http://localhost:8000/customer_data/?SK_ID_CURR="+ str(customer_id))
         # convert from JSON format to Python dict
         content = json.loads(response.content)
         # convert data to pd.Series
@@ -211,11 +201,13 @@ def main():
 
     cust_pers_data = get_customer_data(customer_id)
 
- 
+ # Get data to display in the gauge
+
     def get_cust_scoring(customer_id):
               
         # Requesting the API and save the response
-        response = requests.post("http://localhost:8000/scoring", json=cust_pers_data)
+        response = requests.post("https://herokufastapistreamlit.herokuapp.com/scoring", json=cust_pers_data)
+#        response = requests.post("http://localhost:8000/scoring", json=cust_pers_data)
         # convert from JSON format to Python dict
         content = response.json()
         # getting the values from the content
@@ -231,7 +223,8 @@ def main():
     def get_shap_data(customer_id):
         
         # save the response to API request
-        response = requests.get("http://localhost:8000/shap_data/?SK_ID_CURR="+ str(customer_id))
+        response = requests.get("https://herokufastapistreamlit.herokuapp.com/shap_data/?SK_ID_CURR="+ str(customer_id))
+#        response = requests.get("http://localhost:8000/shap_data/?SK_ID_CURR="+ str(customer_id))
         # convert from JSON format to Python dict
         content = json.loads(response.content)
         # convert data to pd.Series
