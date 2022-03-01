@@ -15,7 +15,7 @@ import streamlit as st
 app = FastAPI()
 model_fname = 'model/final_model.pkl'
 best_model = joblib.load(model_fname)
-application_test = pd.read_pickle('data/application_test.pkl')
+application_test = pd.read_pickle('data/application_test_ltd.pkl')
 data_test = pd.read_pickle("data/data_test_ltd.pkl")
 df_customer_info = pd.read_pickle("data/df_customer_info.pkl")
 df_customer_loan = pd.read_pickle("data/df_customer_loan.pkl")
