@@ -13,7 +13,7 @@ import streamlit as st
 
 # 2. Create app and model objects
 app = FastAPI()
-model_fname = 'model/final_model.pkl'
+model_fname = 'model/final_model_w.pkl'
 best_model = joblib.load(model_fname)
 application_test = pd.read_pickle('data/application_test_ltd.pkl')
 data_test = pd.read_pickle("data/data_test_ltd.pkl")
@@ -92,7 +92,7 @@ def scoring_cust(features: Parameters):
     data_in = np.array(list(data.values())).reshape(1, -1)     
         # Compute the score of the customer 
     prediction = best_model.predict(data_in)
-    probability = best_model.predict_proba(data_in).max()
+    probability = best_model.predict_proba(data_in)[:, 1][0] #.max()
 
     return {'prediction': prediction[0],
             'probability': probability
